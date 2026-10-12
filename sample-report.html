@@ -1,0 +1,286 @@
+<title>Claudeアプデ 2026-10-04〜10-10(サンプル・最新ではありません)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=BIZ+UDPGothic:wght@400;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: 革の地に紙のパネルを並べた掲示板。濃い革の地に羊皮紙のパネル、真鍮の枠。
+   上から「概要(件数)」「今週の注目(3件)」「カテゴリ別+カレンダー」「あなたの環境への影響」「更新一覧(全件)」。
+   1つの世界に固定した単一テーマ(ライト/ダーク共通) */
+:root{
+  color-scheme:dark;
+  --bg:#1e150f; --leather:#2c2018; --leather-2:#3a2b20;
+  --paper:#ecdfbf; --paper-2:#e2d2ab; --ink:#2b1f14; --ink-soft:#5e4a35;
+  --brass:#c9a24a; --brass-dim:#8a6d33; --fg:#f3e8cf; --muted:#c8b694;
+  --seal:#a8322a; --new:#2f6f9a; --up:#3f7d3a; --change:#b8661d; --end:#a8322a; --fix:#6a4c93;
+  --ok:#3f7d3a; --warn:#b8861d; --bad:#a8322a;
+  --font-display:"Zen Antique","Hiragino Mincho ProN","Yu Mincho",serif;
+  --font-body:"BIZ UDPGothic","Hiragino Sans","Yu Gothic UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.7;margin:0;
+  background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.015) 0 2px,transparent 2px 9px),radial-gradient(ellipse at top,rgba(201,162,74,.08),transparent 60%)}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:24px 64px;display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+a{color:var(--new)} a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+svg.ic{width:1em;height:1em;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* 枠 */
+.frame{background:var(--leather);border:2px solid var(--brass);border-radius:6px;box-shadow:inset 0 0 0 4px var(--leather),inset 0 0 0 5px var(--brass-dim),0 6px 18px rgba(0,0,0,.45);padding:18px;min-width:0;overflow-wrap:anywhere;position:relative}
+.frame>h2{font-family:var(--font-display);font-weight:400;font-size:1.25rem;letter-spacing:.12em;margin:0 0 14px;color:var(--brass);display:flex;align-items:center;gap:10px}
+.frame>h2::before,.frame>h2::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--brass-dim))}
+.frame>h2::after{background:linear-gradient(90deg,var(--brass-dim),transparent)}
+.paper{background:var(--paper);color:var(--ink);border-radius:3px;box-shadow:0 2px 0 var(--paper-2),0 3px 8px rgba(0,0,0,.35)}
+.paper a{color:#1f5a85}
+.stars{color:var(--brass);letter-spacing:1px;font-size:.95rem;white-space:nowrap}
+.paper .stars{color:#a07418}
+
+/* 1. 概要 */
+.report{display:grid;gap:16px}
+.report .eyebrow{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);letter-spacing:.05em}
+.report h1{font-family:var(--font-display);font-weight:400;font-size:clamp(1.6rem,4.4vw,2.4rem);line-height:1.25;margin:0;color:var(--fg);text-wrap:balance}
+.tally{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.medal{display:grid;justify-items:center;gap:4px;text-align:center;padding:10px 4px}
+.medal .coin{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:24px;color:var(--paper);border:3px solid var(--brass);box-shadow:inset 0 0 0 2px rgba(0,0,0,.25)}
+.medal b{font-family:var(--font-mono);font-size:1.6rem;line-height:1;color:var(--fg)}
+.medal span{font-size:.78rem;color:var(--muted)}
+.medal .en{font-family:var(--font-display);font-size:.8rem;color:var(--brass);letter-spacing:.08em}
+.sharp{display:grid;gap:6px}
+.sharp .lbl{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted)}
+.sharp .gauge{display:flex;height:16px;border:2px solid var(--brass);border-radius:2px;background:#120c08;overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,0,0,.6)}
+.sharp .gauge span{height:100%;border-right:2px solid #120c08}
+.sharp .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.8rem;color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+/* 2. 今週の注目 */
+.urgent{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.qp{padding:16px 16px 14px;position:relative;display:grid;gap:6px;align-content:start}
+.qp .seal{position:absolute;top:-10px;right:12px;background:var(--seal);color:#fbe9df;font-family:var(--font-display);font-size:.8rem;padding:2px 10px;border-radius:2px;letter-spacing:.1em;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.qp .head{display:flex;align-items:center;gap:10px}
+.qp .emb{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:22px;flex:none;color:var(--paper);border:2px solid var(--ink-soft)}
+.qp h3{font-family:var(--font-display);font-weight:400;font-size:1.05rem;line-height:1.45;margin:0}
+.qp p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.qp .goal{font-size:.78rem;color:var(--ink-soft);border-top:1px dashed var(--ink-soft);padding-top:6px}
+
+/* 3. カテゴリ別 + カレンダー */
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+@media (max-width:760px){.cols{grid-template-columns:minmax(0,1fr)}}
+.st{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(201,162,74,.25)}
+.st:last-child{border-bottom:0}
+.st .ico{width:34px;height:34px;border-radius:4px;display:grid;place-items:center;font-size:19px;color:var(--paper);border:1.5px solid var(--brass-dim)}
+.st .nm{font-weight:700}
+.st .val{font-family:var(--font-mono);color:var(--brass);font-size:1.05rem}
+.st .bar{grid-column:2/4;height:8px;background:#120c08;border:1px solid var(--brass-dim);border-radius:1px;overflow:hidden}
+.st .bar span{display:block;height:100%}
+.st .mix{grid-column:2/4;display:flex;flex-wrap:wrap;gap:2px 10px;font-size:.76rem;color:var(--muted)}
+.st .mix span{display:inline-flex;align-items:center;gap:3px}
+.diary{display:grid;gap:6px}
+.drow{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:center;padding:6px 8px;border-radius:3px}
+.drow:nth-child(odd){background:rgba(255,255,255,.03)}
+.drow .d{font-family:var(--font-mono);font-size:.8rem;color:var(--muted)}
+.drow .d b{color:var(--fg);font-weight:500}
+.drow .icons{display:flex;flex-wrap:wrap;gap:4px}
+.pin{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:14px;color:var(--paper);border:1.5px solid var(--brass-dim);cursor:pointer;padding:0}
+.pin:hover{border-color:var(--brass)}
+.drow .none{font-size:.78rem;color:var(--brass-dim)}
+.note{font-size:.78rem;color:var(--muted);margin:10px 0 0}
+
+/* 4. 環境への影響 */
+.basis{font-size:.84rem;color:var(--muted);margin:0 0 12px}
+.gear{display:grid;gap:12px}
+.slot{display:grid;grid-template-columns:54px minmax(0,1fr);gap:14px;padding:14px;position:relative}
+.slot .wp{width:54px;height:54px;border-radius:4px;display:grid;place-items:center;font-size:26px;color:var(--paper)}
+.slot .who{font-weight:700}
+.slot .stamp{display:inline-block;font-family:var(--font-display);font-size:.85rem;border:2px solid currentColor;border-radius:3px;padding:0 8px;margin:4px 0 6px;transform:rotate(-2deg)}
+.slot p{margin:0 0 4px;font-size:.92rem}
+.slot .sub{font-size:.84rem;color:var(--ink-soft)}
+.slot .rel{font-size:.78rem;color:var(--ink-soft);margin-top:4px;border-top:1px dashed var(--ink-soft);padding-top:4px}
+.noimp{font-size:.84rem;color:var(--muted);margin:12px 0 0}
+
+/* 5. 更新一覧 */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{font:inherit;font-size:.82rem;border:1.5px solid var(--brass-dim);background:var(--leather-2);color:var(--fg);border-radius:3px;padding:2px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.chip[aria-pressed="true"]{border-color:var(--brass);background:var(--brass);color:var(--ink)}
+.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.q{padding:14px;display:grid;gap:6px;align-content:start;scroll-margin-top:16px;position:relative}
+.q.flash{outline:3px solid var(--brass);outline-offset:3px}
+.q .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.q .emb{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:18px;color:var(--paper);flex:none}
+.q .meta{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:.75rem}
+.tag{display:inline-flex;align-items:center;gap:4px;border-radius:2px;padding:0 6px;line-height:1.7;color:#fbf3e1;font-size:.74rem}
+.tag.line{background:none;border:1.5px solid currentColor}
+.q h3{font-size:.98rem;margin:0;line-height:1.5}
+.q p{margin:0;font-size:.88rem}
+.q .aud{font-size:.8rem;color:var(--ink-soft)}
+.q .hist{font-size:.8rem;border-left:3px solid var(--seal);padding-left:8px}
+.src{font-size:.76rem;display:flex;flex-wrap:wrap;gap:2px 12px;color:var(--ink-soft);border-top:1px dashed rgba(94,74,53,.5);padding-top:6px}
+.src a{word-break:break-all}
+.empty{color:var(--muted);font-size:.9rem;padding:8px 0}
+
+/* 表 */
+.tablewrap{overflow-x:auto;border:1.5px solid var(--brass-dim);border-radius:3px;background:var(--leather-2)}
+table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:560px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid rgba(201,162,74,.25);vertical-align:top}
+th{color:var(--brass);font-weight:700;font-size:.78rem}
+tr:last-child td{border-bottom:0}
+td a{color:#9cc7e6}
+details summary{cursor:pointer;font-family:var(--font-display);font-size:1.1rem;color:var(--brass);list-style:none;display:flex;align-items:center;gap:8px}
+details summary::before{content:"◆";font-size:.75em;transition:transform .15s}
+details[open] summary::before{transform:rotate(45deg)}
+details>.inner{margin-top:12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:560px){
+  .frame{padding:14px 12px}
+  .tally{gap:4px}.medal .coin{width:40px;height:40px;font-size:19px}.medal b{font-size:1.25rem}.medal span{display:none}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-model" viewBox="0 0 24 24"><path d="M12 2l8 4.5v9L12 20l-8-4.5v-9z"/><path d="M12 2v18M4 6.5l8 4.5 8-4.5"/></symbol>
+    <symbol id="i-app" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="2"/><path d="M6.5 9.5l3 2.5-3 2.5M12 15h5"/></symbol>
+    <symbol id="i-api" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.3 11l7.4-3.8M8.3 13l7.4 3.8"/></symbol>
+    <symbol id="i-corp" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 3.5 2 3.5H5"/></symbol>
+    <symbol id="k-new" viewBox="0 0 24 24"><path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7z"/></symbol>
+    <symbol id="k-up" viewBox="0 0 24 24"><path d="M12 20V5M5.5 11.5L12 5l6.5 6.5"/><path d="M5 21h14"/></symbol>
+    <symbol id="k-change" viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4.5M12 17.5v.5"/></symbol>
+    <symbol id="k-end" viewBox="0 0 24 24"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9"/></symbol>
+    <symbol id="k-fix" viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 5 5l-9.5 9.5a2.1 2.1 0 0 1-3-3z"/><path d="M14.5 6.5L17 4l3 3-2.5 2.5"/></symbol>
+    <symbol id="v-replace" viewBox="0 0 24 24"><path d="M4 9h13l-3.5-3.5M20 15H7l3.5 3.5"/></symbol>
+    <symbol id="v-combine" viewBox="0 0 24 24"><path d="M5 19L19 5M14 5h5v5"/><path d="M5 5l5 5"/></symbol>
+    <symbol id="v-action" viewBox="0 0 24 24"><path d="M14 4l6 6-9 9H5v-6z"/><path d="M12 6l6 6"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap" id="app"></div>
+
+<script>
+const DATA = {"title": "Claudeアプデ 2026-10-04〜10-10(サンプル・最新ではありません)", "mode": "collect", "period": {"from": "2026-10-04", "to": "2026-10-10"}, "generated_at": "2026-10-10", "highlights": [{"title": "Claude Dashboards(ベータ)— BigQuery 直結の“更新され続けるダッシュボード”", "why": "GA4 の BigQuery エクスポートや Snowflake を使う案件で、質問からダッシュボードまで Claude 内で作れ、各数値から元クエリを辿れる。計測設計・レポーティングの提案の選択肢が変わる。ベータ・有料プラン・Enterprise は既定オフ。", "item_id": "dashboards"}, {"title": "資料作りの土台が変わった:Docs/Slides/Design 正式提供+Google Workspace アドオン", "why": "Slides は全プランで正式提供になり、編集可能な Google スライドで書き出せる。さらに Google Docs/Sheets/Slides の中で Claude が選択範囲を見て直接編集できるアドオン(公開ベータ・有料)も出た。社内の資料作成フローや、資料作りの skill の役割を見直すタイミング。", "item_id": "dsd-ga"}, {"title": "Claude Haiku 5.5 — 大量処理の自動化コストが大きく下がる", "why": "入力 $0.10 / 出力 $0.50(100万トークン)で Haiku 4.5 の約10分の1の単価(公式は平均で約75%安いと説明)。タグ付け・分類・要約など MA やデータ整備の自動化に向く。Max/Team には月次 API クレジット(Max 5x $100 など)も付いたので、試す費用はほぼかからない。", "item_id": "haiku55"}], "items": [{"id": "haiku55", "date": "2026-10-07", "category": "モデル", "title": "Claude Haiku 5.5 公開", "summary": "小型・最安・最速の新モデル。料金は入力 $0.10 / 出力 $0.50(100万トークンあたり、プロンプト10万トークン超は $0.50 / $2.50)で、Haiku 4.5($1 / $5)より大幅に安い。コンテキスト1M・最大出力128k。要約・分類・サブエージェントなど大量処理向けで、複雑なエージェント型コーディングは Sonnet 5.5 のほうが上とされる。", "audience": "API(claude-haiku-5-5)/ Amazon Bedrock / Google Cloud / Microsoft Foundry", "confidence": "confirmed", "sources": [{"label": "Claude Haiku 5.5 発表ページ", "url": "https://www.anthropic.com/claude-haiku-5-5", "type": "official"}, {"label": "Platform Release notes 10/7", "url": "https://platform.claude.com/docs/en/release-notes/overview", "type": "official"}, {"label": "Help Center Release notes 10/7", "url": "https://support.claude.com/en/articles/12138966-release-notes", "type": "official"}], "history": "", "note": "Haiku 4.5 からの移行で temperature / top_p / top_k / budget_tokens / prefill を指定すると400エラー。Claudeアプリ(チャット)でどのプランから選べるかは公式ページに記載が無く未確認。", "kind": "new"}, {"id": "dashboards", "date": "2026-10-08", "category": "Claudeアプリ", "title": "Claude Dashboards(ベータ)", "summary": "データについての質問から、元データの更新に合わせて最新化されるダッシュボードを作る。BigQuery・Snowflake・Redshift・Databricks・ClickHouse や Salesforce などのコネクタに対応し、各数値から元のクエリを確認でき、グラフごとに最終更新時刻が出る。Amplitude・Mixpanel・Hex・Grafana などへ送ることもできる。", "audience": "有料プラン(Enterprise は既定オフ・管理者が Organization settings > Artifacts で有効化)", "confidence": "confirmed", "sources": [{"label": "Claude Resources: Dashboards and Motion", "url": "https://claude.com/resources/articles/dashboards-and-motion", "type": "official"}, {"label": "窓の杜 10/9", "url": "https://forest.watch.impress.co.jp/docs/news/2146954.html", "type": "press"}], "history": "", "note": "Release notes には載っていない(Resources 記事のみ)。", "kind": "new"}, {"id": "motion", "date": "2026-10-08", "category": "Claudeアプリ", "title": "Claude Motion(ベータ)", "summary": "プロンプトから短い解説アニメーションを作り、エディタまたは会話で直して MP4 で書き出せる。動画生成モデルではなく、テキスト・グラフ・図形・画像をコードで動かす方式なので、生成映像やAI人物は出ない。Adobe・Descript・Runway などで開ける。", "audience": "Team / Enterprise(Enterprise は既定オフ)", "confidence": "confirmed", "sources": [{"label": "Claude Resources: Dashboards and Motion", "url": "https://claude.com/resources/articles/dashboards-and-motion", "type": "official"}], "history": "", "note": "", "kind": "new"}, {"id": "dsd-ga", "date": "2026-10-08", "category": "Claudeアプリ", "title": "Docs・Slides・Design がベータ終了、全プランで提供", "summary": "Claude Docs / Slides / Design がベータを終え、Free を含む全プランで使える。PowerPoint・PDF 書き出しで書式を保持し、スライドは編集可能な Google スライドとしても出せる。組織内の共同編集、管理者が許可すれば組織外へのリンク共有、モバイルでの編集にも対応。Enterprise では CMEK 対応と、使うテンプレートを管理者が選べるようになった。", "audience": "全プラン(Enterprise は 10/15 に既定でオン。管理者はそれより前に有効化可)", "confidence": "confirmed", "sources": [{"label": "Claude Resources: Dashboards and Motion", "url": "https://claude.com/resources/articles/dashboards-and-motion", "type": "official"}, {"label": "Help Center Release notes 9/16", "url": "https://support.claude.com/en/articles/12138966-release-notes", "type": "official"}], "history": "9/16 に全プランで導入(Enterprise はベータ・既定オフ)→ 10/8 にベータ終了。Enterprise は 10/15 に既定オン", "note": "", "kind": "up"}, {"id": "design-standalone", "date": "2026-10-08", "category": "Claudeアプリ", "title": "単体の claude.ai/design は 12/14 で終了", "summary": "Design は 9/16 から通常の会話の中で使えるようになっており、単体サイト claude.ai/design は 12/14 まで。チームのデザインシステムは Artifacts ページの「Migrate team design systems」で移行できる。終了後は単体版のチャット・プロジェクトのコメントは使えず、単体版プロジェクトの公開リンクも切れる。", "audience": "claude.ai/design を使っている人・チーム", "confidence": "confirmed", "sources": [{"label": "Claude Resources: Dashboards and Motion", "url": "https://claude.com/resources/articles/dashboards-and-motion", "type": "official"}, {"label": "移行ガイド", "url": "https://support.claude.com/en/articles/17440474", "type": "official"}], "history": "", "note": "移行ガイドのページ自体は開いていない(終了日などは発表記事で確認)。", "kind": "end"}, {"id": "gws", "date": "2026-10-06", "category": "Claudeアプリ", "title": "Claude for Google Workspace(アドオン)と Google Docs/Sheets/Slides コネクタ", "summary": "Google Docs・Sheets・Slides の中に Claude のサイドバーを出すアドオンが公開ベータに。開いているファイルと選択範囲を読み、その場で編集する(Sheets では数式・ピボット・グラフ作成、Slides ではデッキのレイアウトとテーマでスライド作成)。あわせて、チャット側から Google ファイルを作成・編集するコネクタもベータで出た。権限は Google の共有設定に従う。", "audience": "有料プラン(アドオンは公開ベータ。Team/Enterprise はコネクタをオーナーが先に有効化)", "confidence": "confirmed", "sources": [{"label": "Claude Resources: Google Docs, Sheets, and Slides", "url": "https://claude.com/resources/articles/claude-now-works-in-google-docs-sheets-and-slides", "type": "official"}], "history": "", "note": "アドオンは Google Workspace Marketplace からインストール。管理者は Google Admin コンソールで一括配布できる。", "kind": "new"}, {"id": "api-credits", "date": "2026-10-07", "category": "API・Platform", "title": "Max・Team プランに毎月の API クレジット", "summary": "Max と Team に、Claude Platform で自作アプリやエージェントを動かすための月次 API クレジットが付いた。額は Max 5x が $100、Max 20x が $200、Team は最大 $500(組織でプール)で、どのモデルにも使える。受け取るには Claude Console の組織を Settings > Billing(Max)/ Organization settings > Billing(Team)でリンクする。", "audience": "Max / Team", "confidence": "confirmed", "sources": [{"label": "Help Center Release notes 10/7", "url": "https://support.claude.com/en/articles/12138966-release-notes", "type": "official"}, {"label": "Claude Haiku 5.5 発表ページ(金額)", "url": "https://www.anthropic.com/claude-haiku-5-5", "type": "official"}, {"label": "Platform Release notes 10/7", "url": "https://platform.claude.com/docs/en/release-notes/overview", "type": "official"}], "history": "", "note": "数日かけて順次付与。", "kind": "up"}, {"id": "sonnet55-cache", "date": "2026-10-07", "category": "API・Platform", "title": "Sonnet 5.5 のキャッシュ読み取り料金を半額に", "summary": "Sonnet 5.5 のプロンプトキャッシュ読み取りが 100万トークンあたり $0.20 → $0.10(基本入力の0.1倍 → 0.05倍)。キャッシュ書き込みやその他の料金は変わらない。Claude Code の /cost・ステータスライン・--max-budget-usd も 2.1.296 でこの料金に追従した。", "audience": "API", "confidence": "confirmed", "sources": [{"label": "Platform Release notes 10/7", "url": "https://platform.claude.com/docs/en/release-notes/overview", "type": "official"}, {"label": "Claude Code CHANGELOG 2.1.296", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}], "history": "9/28 に Sonnet 5.5 公開 → 10/7 にキャッシュ読み取り値下げ", "note": "", "kind": "up"}, {"id": "sdk-cu", "date": "2026-10-07", "category": "API・Platform", "title": "Python / TypeScript SDK に computer use・browser use のクラス(ベータ)", "summary": "SDK のクラスを継承してツールごとのメソッドを書くだけで、ツールループ、URL・ファイルのポリシー、承認コールバックを SDK が回してくれる。自前でループを組まずにブラウザ操作エージェントを作れる。", "audience": "API(Python / TypeScript SDK)", "confidence": "confirmed", "sources": [{"label": "Platform Release notes 10/7", "url": "https://platform.claude.com/docs/en/release-notes/overview", "type": "official"}], "history": "", "note": "", "kind": "new"}, {"id": "ma-network", "date": "2026-10-07", "category": "API・Platform", "title": "Managed Agents:limited ネットワークの web ツール制限を強化", "summary": "limited ネットワークの allowed_hosts が web_search / web_fetch にも適用されるようになった。web_fetch はセッション内に既に出てきた URL しか取得できなくなり、それ以外は url_not_in_prior_context エラー。allowed_hosts 外の allowed_domains を指定すると作成・更新が400になる。", "audience": "API(Managed Agents)", "confidence": "confirmed", "sources": [{"label": "Platform Release notes 10/7", "url": "https://platform.claude.com/docs/en/release-notes/overview", "type": "official"}], "history": "", "note": "既存の Managed Agents の設定によってはエラーになる可能性あり。", "kind": "change"}, {"id": "ma-workflows", "date": "2026-10-09", "category": "API・Platform", "title": "Managed Agents:Dynamic workflows(ベータ)", "summary": "エージェントの multiagent に workflows を有効にすると、ワークフロー実行をバックグラウンドで走らせ、セッションのイベントストリーム(workflow_run.*)で追える。", "audience": "API(Managed Agents、managed-agents-2026-04-01 ヘッダー)", "confidence": "confirmed", "sources": [{"label": "Platform Release notes 10/9", "url": "https://platform.claude.com/docs/en/release-notes/overview", "type": "official"}], "history": "", "note": "", "kind": "new"}, {"id": "compliance", "date": "2026-10-08", "category": "API・Platform", "title": "Compliance API が統合後の Claude のチャットも返すように(ベータ)", "summary": "Compliance API のチャット系エンドポイントが、統合された Claude(チャット+Cowork)のチャットも返すようになった。既存の Compliance Access Key で使える。", "audience": "Enterprise", "confidence": "confirmed", "sources": [{"label": "Platform Release notes 10/8", "url": "https://platform.claude.com/docs/en/release-notes/overview", "type": "official"}], "history": "", "note": "", "kind": "up"}, {"id": "models-api", "date": "2026-10-06", "category": "API・Platform", "title": "Models API に機能フラグを追加", "summary": "10/5 に capabilities.thinking.types.disabled(thinking を無効にできるか)、10/6 に capabilities.server_tools(code execution ツールを受け付けるか)が追加。モデルごとの対応をコードで判定しやすくなった。", "audience": "API", "confidence": "confirmed", "sources": [{"label": "Platform Release notes 10/5・10/6", "url": "https://platform.claude.com/docs/en/release-notes/overview", "type": "official"}], "history": "", "note": "", "kind": "new"}, {"id": "cc-haiku", "date": "2026-10-08", "category": "Claude Code", "title": "Claude Code が Haiku 5.5 に対応(既定の Haiku に)", "summary": "2.1.293 で claude-haiku-5-5 を追加し、Anthropic API での既定の Haiku モデルになった。バックグラウンド処理などで Haiku を使う場面が新モデルに切り替わる。", "audience": "Claude Code(Anthropic API 経由)", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.293", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "", "kind": "up"}, {"id": "cc-managed-onboard", "date": "2026-10-06", "category": "Claude Code", "title": "新コマンド /claude-api managed-agents-onboard", "summary": "ページの URL を渡すと、そこに書かれた Managed Agents の構成を ant apply 用のファイルとして組み立てる。Console のクイックスタート名(例: deep-researcher)を渡すと、そのテンプレートを ant CLI で作る。", "audience": "Claude Code", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.290", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "", "kind": "new"}, {"id": "cc-plugin-mkt", "date": "2026-10-07", "category": "Claude Code", "title": "claude plugin install --marketplace <source>", "summary": "マーケットプレイスの追加とプラグインのインストールを1コマンドで行えるようになった(追加時のポリシーチェックは marketplace add と同じ)。チームへのプラグイン配布手順が1行で書ける。", "audience": "Claude Code", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.292", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "", "kind": "new"}, {"id": "cc-attach", "date": "2026-10-06", "category": "Claude Code", "title": "claude attach / claude logs でセッション名の一部を指定可能に", "summary": "バックグラウンドセッションに入る claude attach と、ログを見る claude logs で、ID の代わりにセッション名の一部を使えるようになった。", "audience": "Claude Code", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.290", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "", "kind": "up"}, {"id": "cc-subagent", "date": "2026-10-10", "category": "Claude Code", "title": "サブエージェント・ワークフローの制御が細かく", "summary": "Agent ツールに effort パラメータ(2.1.292)、サブエージェント定義に autoCompactWindow(2.1.296)、ワークフローのエージェントだけを1つのモデルで動かす CLAUDE_CODE_WORKFLOW_SUBAGENT_MODEL(2.1.296)が追加。サブエージェントが一度に読み込む skill は最大32件に(2.1.295)。", "audience": "Claude Code", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.292〜2.1.296", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "", "kind": "up"}, {"id": "cc-hooks", "date": "2026-10-09", "category": "Claude Code", "title": "hooks に onFailure: \"block\"", "summary": "command / HTTP hook が起動できない・タイムアウト・想定外の終了コードのとき、操作を通さずに止められるようになった(2.1.295)。2.1.296 では --debug で各 hook の実行時間などが出るようになり、遅い hook を特定しやすい。", "audience": "Claude Code", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.295・2.1.296", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "", "kind": "new"}, {"id": "cc-mods", "date": "2026-10-09", "category": "Claude Code", "title": "mods の API 拡張($.ui.notify、prompt.autocomplete など)", "summary": "mods から OS 通知を出す $.ui.notify、入力欄の補完候補を足す prompt.autocomplete、$.model.complete のプロンプトキャッシュ、ツールをツール検索に隠さず最初から載せる isDeferred などが追加された。", "audience": "Claude Code(mods を作る人)", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.292・2.1.293・2.1.295", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "mods 自体の紹介記事は 10/1(期間外)。", "kind": "up"}, {"id": "cc-mcp", "date": "2026-10-09", "category": "Claude Code", "title": "MCP:新プロトコル版を既定に、説明文の上限を拡大", "summary": "ローカル(stdio)MCP サーバー(2.1.292)と claude.ai のコネクタ(2.1.295)が MCP プロトコル 2026-07-28 を既定で使うようになった(MCP_PROTOCOL_NEGOTIATION=legacy で戻せる)。最初に送る MCP ツール説明とサーバー指示の上限は 2,048 → 4,096 文字(2.1.296)。", "audience": "Claude Code", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.292・2.1.295・2.1.296", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "", "kind": "change"}, {"id": "cc-websearch", "date": "2026-10-06", "category": "Claude Code", "title": "WebSearch の回数上限が時間で回復する方式に", "summary": "対話セッションの WebSearch が「200回で終わり」から「1時間あたり100回まで回復」に変わった。CLAUDE_CODE_WEB_SEARCH_REFILLS_PER_HOUR で調整できる。", "audience": "Claude Code", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.290", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "", "kind": "change"}, {"id": "cc-misc", "date": "2026-10-10", "category": "Claude Code", "title": "Claude Code 2.1.289〜2.1.296:その他の改善と修正", "summary": "期間中に8バージョンを公開。上記のほか、Claude apps gateway(企業向けの接続ゲートウェイ)の設定追加、VS Code 拡張・Claude Tag(Slack)・Code Review の管理画面の改善などがあり、バグ修正は合計410件。", "audience": "Claude Code", "confidence": "confirmed", "sources": [{"label": "Claude Code CHANGELOG 2.1.289〜2.1.296", "url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md", "type": "official"}, {"label": "npm 公開日時", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "type": "official"}], "history": "", "note": "日付は npm 公開日時(JST)。", "kind": "fix"}, {"id": "usage-policy", "date": "2026-10-08", "category": "会社・その他", "title": "利用ポリシー(Usage Policy)改定、11/12 から適用", "summary": "偽アカウントや世論工作をまとめて禁じる節を新設、監視・法執行での利用の線引きを明確化、自律的に動く物理機器への接続に安全要件を追加、モデルへの極端な虐待的行為の禁止など。選挙関連ではパーソナライズしたターゲティングの一律禁止が外れた(欺瞞的なものは引き続き禁止)。Anthropic は大半を既存ルールの明確化と説明している。", "audience": "全利用者", "confidence": "confirmed", "sources": [{"label": "Anthropic News: 2026 Usage Policy update", "url": "https://www.anthropic.com/news/2026-usage-policy-update", "type": "official"}], "history": "", "note": "", "kind": "change"}, {"id": "cyber", "date": "2026-10-08", "category": "会社・その他", "title": "Anthropic Cyber Mission と Cyber Verification Program 拡大", "summary": "10/6 に Cyber Verification Program を Defense / Red Team / Specialized Access の3段階に拡大。10/8 に重要インフラ防御プログラムと、オープンソース向けの無料セキュリティスキャン(OSS Scanner)を含む Anthropic Cyber Mission を発表した。", "audience": "セキュリティ担当・OSS メンテナー", "confidence": "confirmed", "sources": [{"label": "Anthropic News: Cyber Mission", "url": "https://www.anthropic.com/news/anthropic-cyber-mission", "type": "official"}, {"label": "Anthropic News: Cyber Verification Program", "url": "https://www.anthropic.com/news/cyber-verification-program", "type": "official"}], "history": "", "note": "", "kind": "new"}, {"id": "startups", "date": "2026-10-06", "category": "会社・その他", "title": "Claude Startups プログラム拡大", "summary": "Claude で開発するスタートアップに、最大 $7,000 分の製品とクレジット(Team 1年無料・API $1,000)と、提携ツールの割引など最大 $45,000 分を提供。設立5年以内または直近2年に資金調達した企業が対象。", "audience": "スタートアップ", "confidence": "confirmed", "sources": [{"label": "Claude Resources: Claude Startups", "url": "https://claude.com/resources/articles/were-expanding-the-claude-startups-program-to-help-founders-build", "type": "official"}], "history": "", "note": "地域制限の記載は無かった。", "kind": "up"}, {"id": "genesis", "date": "2026-10-08", "category": "会社・その他", "title": "米国 Genesis Mission に3年で $1.5億", "summary": "米国政府の科学研究向けAI施策 Genesis Mission に、3年で $1億5,000万を拠出し、NASA・NIH・NSF など15以上の機関に Claude を提供すると発表。", "audience": "(米国の研究機関)", "confidence": "confirmed", "sources": [{"label": "Anthropic News: Genesis Mission", "url": "https://www.anthropic.com/news/genesis-mission-commitment", "type": "official"}], "history": "", "note": "", "kind": "new"}], "impact": {"basis": "サンプル用の架空の環境:組織で共有しているスライド作成 skill・グラフ作成 skill・Google Drive コネクタ・API で Haiku 4.5 を呼ぶ自動化", "rows": [{"target": "brand-slides(組織で共有している skill)", "update_ids": ["dsd-ga", "gws"], "verdict": "replace", "decision": "併用する", "reason": "公式の Slides が全プランで正式提供になり、Google スライド内で作れるアドオンも出た。ただし社内のテンプレートや表記ルールは公式機能には無い。", "keep": "社内テンプレートの型、表記ルール、納品前チェック", "next_step": "skill を「公式 Slides に社内の型を当てる手順」に寄せる案を持ち主に相談"}, {"target": "chart-maker(個人の skill)", "update_ids": ["dashboards"], "verdict": "combine", "decision": "一回きりは skill、継続監視は Dashboards", "reason": "手元の CSV からの一回きりのグラフは skill のまま。BigQuery などに直結して更新され続けるダッシュボードは Dashboards(ベータ・有料)が担える。", "next_step": "定期レポートの案件で Dashboards を一度試す"}, {"target": "Haiku 4.5 を API で呼ぶ自動化", "update_ids": ["haiku55"], "verdict": "action", "decision": "移行時にパラメータを確認", "reason": "Haiku 5.5 は Haiku 4.5 より安いが、temperature など一部の指定がエラーになる。モデル名だけ差し替えると止まる。", "next_step": "切り替え前に、送っているパラメータを確認する"}], "no_impact": ["meeting-notes", "writing-style", "Google Drive コネクタ"]}, "claims": [], "missed_ids": [], "searched": [{"source": "Claude Resources(記事一覧)", "url": "https://claude.com/resources/articles", "status": "開けた(2ページ)", "range": "10/8〜9/15(期間をカバー。10/4 の記事は無し)", "count": "11"}, {"source": "Help Center Release notes", "url": "https://support.claude.com/en/articles/12138966-release-notes", "status": "開けた", "range": "全期間", "count": "2(10/7)"}, {"source": "Platform Release notes", "url": "https://platform.claude.com/docs/en/release-notes/overview", "status": "開けた", "range": "10/9〜(期間をカバー)", "count": "10"}, {"source": "Anthropic News", "url": "https://www.anthropic.com/news", "status": "開けた", "range": "10/8〜9/1", "count": "5"}, {"source": "Claude Code CHANGELOG + npm", "url": "https://registry.npmjs.org/@anthropic-ai/claude-code", "status": "スクリプトで取得", "range": "2.1.289〜2.1.296", "count": "8バージョン"}, {"source": "公式X(@claudeai / @AnthropicAI)", "url": "https://x.com/claudeai", "status": "検索経由・投稿本文は取得できず", "range": "—", "count": "0"}, {"source": "Releasebot(非公式トラッカー)", "url": "https://releasebot.io/updates/anthropic", "status": "開けた(候補探しのみ)", "range": "10/3〜10/8", "count": "新規候補0"}, {"source": "報道(窓の杜・AI PICKS ほか)", "url": "https://forest.watch.impress.co.jp/docs/news/2146954.html", "status": "検索・2本を開いた", "range": "10/9", "count": "新規候補0"}, {"source": "直前の再確認(10/9〜10/10 の追加分)", "url": "https://platform.claude.com/docs/en/release-notes/overview", "status": "Resources一覧・Platform/Help Center Release notes・npm を再取得", "range": "10/9〜10/10", "count": "追加なし"}]};
+
+const CATS=[
+  {k:"モデル",icon:"i-model",color:"#6a4c93"},
+  {k:"Claudeアプリ",icon:"i-app",color:"#2f6f9a"},
+  {k:"Claude Code",icon:"i-code",color:"#3f7d3a"},
+  {k:"API・Platform",icon:"i-api",color:"#b8661d"},
+  {k:"会社・その他",icon:"i-corp",color:"#8a5a44"}];
+const CATMAP=Object.fromEntries(CATS.map(c=>[c.k,c]));
+const KINDS={new:{l:"NEW",j:"新登場",icon:"k-new",c:"var(--new)"},up:{l:"UP",j:"強化・値下げ",icon:"k-up",c:"var(--up)"},change:{l:"CHANGE",j:"仕様変更",icon:"k-change",c:"var(--change)"},end:{l:"END",j:"終了・期限",icon:"k-end",c:"var(--end)"},fix:{l:"FIX",j:"修正",icon:"k-fix",c:"var(--fix)"}};
+const CONF={confirmed:["公式確認","var(--ok)","✅"],reported:["報道で一致","var(--warn)","🟡"],unverified:["未確認","var(--bad)","⚠️"]};
+const VERD={correct:["✅ 正しい","#8fd18a"],partly:["✏️ 一部違う","#e8b84f"],wrong:["❌ 誤り","#ef8a80"],unverified:["⚠️ 未確認","var(--muted)"]};
+const IMP={action:{l:"要対応",icon:"v-action",c:"var(--seal)"},replace:{l:"置き換え候補",icon:"v-replace",c:"#8a6510"},combine:{l:"組み合わせ",icon:"v-combine",c:"var(--up)"}};
+const SRC={official:"公式",press:"報道",x:"公式X",tracker:"トラッカー"};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ic=id=>`<svg class="ic" aria-hidden="true"><use href="#${id}"/></svg>`;
+const items=(DATA.items||[]).map(i=>({...i,kind:KINDS[i.kind]?i.kind:"new"})).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+const byId=Object.fromEntries(items.map(i=>[i.id,i]));
+const cat=k=>CATMAP[k]||CATS[4];
+/* ★ = 読む優先度:注目に選ばれた=3、環境に影響あり or 仕様変更・終了=2、その他=1 */
+const hlIds=new Set((DATA.highlights||[]).map(h=>h.item_id).filter(Boolean));
+const impIds=new Set(((DATA.impact||{}).rows||[]).flatMap(r=>r.update_ids||[]));
+const rank=i=>hlIds.has(i.id)?3:(impIds.has(i.id)||i.kind==="change"||i.kind==="end")?2:1;
+const stars=n=>`<span class="stars" aria-label="優先度${n}">${"★".repeat(n)}${"☆".repeat(3-n)}</span>`;
+let fCat=null,fConf=null,fRank=null;
+try{const s=JSON.parse(localStorage.getItem("cud-filter3")||"{}");fCat=s.c||null;fConf=s.f||null;fRank=s.r||null}catch(e){}
+
+function days(){
+  const out=[],a=new Date((DATA.period?.from||"")+"T00:00:00"),b=new Date((DATA.period?.to||"")+"T00:00:00");
+  if(isNaN(a)||isNaN(b)||b<a) return out;
+  for(let d=new Date(a);d<=b&&out.length<62;d.setDate(d.getDate()+1)){
+    const iso=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    out.push({iso,label:(d.getMonth()+1)+"/"+d.getDate(),wd:"日月火水木金土"[d.getDay()]});
+  }
+  return out;
+}
+function reportHtml(){
+  const cnt=k=>items.filter(i=>i.kind===k).length, cc=k=>items.filter(i=>i.confidence===k).length, n=items.length||1;
+  return `<section class="frame report">
+    <div class="eyebrow">レポート ・ ${esc(DATA.period?.from)} 〜 ${esc(DATA.period?.to)} ・ 作成 ${esc(DATA.generated_at)}${DATA.mode==="verify"?" ・ 検証モード":""}</div>
+    <h1>${esc(DATA.title)}</h1>
+    <div class="tally">${Object.entries(KINDS).map(([k,v])=>`<div class="medal"><div class="coin" style="background:${v.c}">${ic(v.icon)}</div><b>${cnt(k)}</b><div class="en">${v.l}</div><span>${v.j}</span></div>`).join("")}</div>
+    <div class="sharp"><div class="lbl"><span>信頼度ゲージ</span><span class="mono">${cc("confirmed")}/${items.length} 公式確認</span></div>
+      <div class="gauge" role="img" aria-label="公式確認${cc("confirmed")}件、報道で一致${cc("reported")}件、未確認${cc("unverified")}件">${Object.entries(CONF).map(([k,v])=>cc(k)?`<span style="width:${cc(k)/n*100}%;background:${v[1]}"></span>`:"").join("")}</div>
+      <div class="legend">${Object.entries(CONF).map(([k,v])=>`<span><i class="dot" style="background:${v[1]}"></i>${v[2]} ${v[0]} ${cc(k)}</span>`).join("")}</div></div>
+  </section>`;
+}
+function urgentHtml(){
+  const hls=DATA.highlights||[]; if(!hls.length) return "";
+  return `<section class="frame"><h2>今週の注目</h2><div class="urgent">${hls.map(h=>{const it=byId[h.item_id];const c=it?cat(it.category):null;const k=it?KINDS[it.kind]:null;
+    return `<div class="paper qp"><span class="seal">注目</span>
+      <div class="head"><div class="emb" style="background:${c?c.color:"var(--seal)"}">${ic(c?c.icon:"k-new")}</div><div>${stars(3)}${k?` <span class="tag" style="background:${k.c}">${ic(k.icon)}${k.l}</span>`:""}</div></div>
+      <h3>${esc(h.title)}</h3><p>${esc(h.why)}</p>
+      ${it?`<div class="goal">${esc(it.category)} ・ ${esc(it.date)} ・ <button class="chip" style="font-size:.74rem;padding:0 6px" data-jump="${esc(it.id)}">詳細へ</button></div>`:""}</div>`}).join("")}</div></section>`;
+}
+function statusHtml(){
+  const max=Math.max(1,...CATS.map(c=>items.filter(i=>i.category===c.k).length));
+  const rows=CATS.map(c=>{const its=items.filter(i=>i.category===c.k);
+    return `<div class="st"><div class="ico" style="background:${c.color}">${ic(c.icon)}</div><div class="nm">${esc(c.k)}</div><div class="val">${its.length}</div>
+      <div class="bar"><span style="width:${its.length/max*100}%;background:${c.color}"></span></div>
+      <div class="mix">${Object.entries(KINDS).map(([k,v])=>{const n=its.filter(i=>i.kind===k).length;return n?`<span>${ic(v.icon)}${v.l} ${n}</span>`:""}).join("")||"<span>動きなし</span>"}</div></div>`}).join("");
+  const ds=days();
+  const diary=ds.map(d=>{const its=items.filter(i=>i.date===d.iso);
+    return `<div class="drow"><div class="d"><b>${d.label}</b> ${d.wd}</div><div class="icons">${its.length?its.map(i=>`<button class="pin" style="background:${cat(i.category).color}" data-jump="${esc(i.id)}" title="${esc(i.title)}" aria-label="${esc(i.title)}">${ic(KINDS[i.kind].icon)}</button>`).join(""):`<span class="none">― 動きなし</span>`}</div></div>`}).join("");
+  return `<div class="cols"><section class="frame"><h2>カテゴリ別</h2>${rows}</section>
+    <section class="frame"><h2>カレンダー</h2><div class="diary">${diary}</div><p class="note">印の形は種類(★新登場・↑強化・△仕様変更・⌛終了・修正)、色はカテゴリ。押すと更新一覧のその項目へ。</p></section></div>`;
+}
+function impactHtml(){
+  const im=DATA.impact; if(!im) return "";
+  const order=["action","replace","combine"];
+  const rows=(im.rows||[]).slice().sort((a,b)=>order.indexOf(a.verdict)-order.indexOf(b.verdict));
+  return `<section class="frame"><h2>あなたの環境への影響</h2>
+    ${im.basis?`<p class="basis">判定のもと:${esc(im.basis)}</p>`:""}
+    ${rows.length?`<div class="gear">${rows.map(r=>{const v=IMP[r.verdict]||IMP.combine;return `<div class="paper slot"><div class="wp" style="background:${v.c}">${ic(v.icon)}</div><div style="min-width:0">
+      <div class="who">${esc(r.target)}</div><span class="stamp" style="color:${v.c}">${v.l} ・ ${esc(r.decision)}</span>
+      <p>${esc(r.reason)}</p>${r.keep?`<div class="sub">skillにしか無いもの:${esc(r.keep)}</div>`:""}${r.next_step?`<div class="sub">次にやること:${esc(r.next_step)}</div>`:""}
+      ${(r.update_ids||[]).length?`<div class="rel">関係する更新:${r.update_ids.map(id=>esc(byId[id]?.title||id)).join(" / ")}</div>`:""}</div></div>`}).join("")}</div>`:`<div class="empty">影響のある skill は見つかりませんでした。</div>`}
+    ${(im.no_impact||[]).length?`<p class="noimp">影響なし ${im.no_impact.length}件:${im.no_impact.map(esc).join("、")}</p>`:""}
+  </section>`;
+}
+function srcHtml(list){return (list||[]).map(s=>`<span>${esc(SRC[s.type]||"")}${s.type?":":""}<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label||s.url)}</a></span>`).join("")}
+function qHtml(it){
+  const c=cat(it.category),k=KINDS[it.kind],cf=CONF[it.confidence]||CONF.unverified;
+  return `<article class="paper q" id="q-${esc(it.id)}">
+    <div class="top"><div class="emb" style="background:${c.color}">${ic(c.icon)}</div>${stars(rank(it))}</div>
+    <div class="meta"><span class="tag" style="background:${k.c}">${ic(k.icon)}${k.l}</span><span class="tag" style="background:${c.color}">${esc(it.category)}</span><span class="tag line" style="color:${cf[1]}">${cf[2]} ${cf[0]}</span><span class="mono" style="color:var(--ink-soft)">${esc(it.date)}</span></div>
+    <h3>${esc(it.title)}</h3><p>${esc(it.summary)}</p>
+    ${it.audience?`<div class="aud">対象:${esc(it.audience)}</div>`:""}
+    ${it.history?`<div class="hist">経緯:${esc(it.history)}</div>`:""}
+    ${it.note?`<div class="aud">メモ:${esc(it.note)}</div>`:""}
+    <div class="src">${srcHtml(it.sources)}</div></article>`;
+}
+function verifyHtml(){
+  const claims=DATA.claims||[]; if(!claims.length&&DATA.mode!=="verify") return "";
+  const missed=items.filter(i=>(DATA.missed_ids||[]).includes(i.id));
+  return `<section class="frame"><h2>貼られたまとめの検証</h2><div class="tablewrap"><table><thead><tr><th>主張</th><th>判定</th><th>正しい内容</th><th>出典</th></tr></thead><tbody>${claims.map(c=>{const v=VERD[c.verdict]||VERD.unverified;return `<tr><td>${esc(c.claim)}</td><td style="color:${v[1]};white-space:nowrap">${v[0]}</td><td>${esc(c.correction)}</td><td style="font-size:.76rem">${(c.sources||[]).map(s=>`<div><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label||s.url)}</a></div>`).join("")}</td></tr>`}).join("")}</tbody></table></div></section>
+  <section class="frame"><h2>元のまとめに無かった更新</h2>${missed.length?`<div class="board">${missed.map(qHtml).join("")}</div>`:`<div class="empty">見落としは見つかりませんでした。</div>`}</section>`;
+}
+function boardHtml(){
+  const shown=items.filter(i=>(!fCat||i.category===fCat)&&(!fConf||i.confidence===fConf)&&(!fRank||String(rank(i))===fRank)).sort((a,b)=>rank(b)-rank(a)||String(b.date).localeCompare(String(a.date)));
+  const chip=(g,v,label,cur)=>`<button class="chip" data-g="${g}" data-v="${esc(v??"")}" aria-pressed="${cur===v}">${label}</button>`;
+  return `<section class="frame"><h2>更新一覧</h2>
+    <div class="filters" role="group" aria-label="カテゴリで絞り込む">${chip("c",null,"すべて",fCat)}${CATS.map(c=>chip("c",c.k,ic(c.icon)+esc(c.k),fCat)).join("")}</div>
+    <div class="filters" role="group" aria-label="優先度と信頼度で絞り込む">${chip("r",null,"★すべて",fRank)}${["3","2","1"].map(r=>chip("r",r,"★".repeat(+r)+"☆".repeat(3-r),fRank)).join("")}${Object.entries(CONF).map(([k,v])=>chip("f",k,v[2]+" "+v[0],fConf)).join("")}</div>
+    <p class="note" style="margin:0 0 12px">★の数は読む優先度。★★★=今週の注目/★★=あなたの環境に関係する・仕様変更・終了/★=その他。</p>
+    ${shown.length?`<div class="board">${shown.map(qHtml).join("")}</div>`:`<div class="empty">この条件に当てはまる更新はありません。</div>`}</section>`;
+}
+function tailHtml(){
+  const changed=items.filter(i=>i.history);
+  return `${changed.length?`<section class="frame"><h2>状態が変わったもの</h2><div class="tablewrap"><table><thead><tr><th>日付</th><th>項目</th><th>経緯</th></tr></thead><tbody>${changed.map(i=>`<tr><td class="mono">${esc(i.date)}</td><td>${esc(i.title)}</td><td>${esc(i.history)}</td></tr>`).join("")}</tbody></table></div></section>`:""}
+  <section class="frame"><details><summary>探した場所と読めた範囲(${(DATA.searched||[]).length}か所)</summary><div class="inner">
+    <div class="tablewrap"><table><thead><tr><th>情報源</th><th>状態</th><th>読めた範囲</th><th>件数</th></tr></thead><tbody>${(DATA.searched||[]).map(s=>`<tr><td>${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.source)}</a>`:esc(s.source)}</td><td>${esc(s.status)}</td><td>${esc(s.range)}</td><td class="mono">${esc(s.count)}</td></tr>`).join("")}</tbody></table></div>
+    <p class="note">✅ 公式ページを開いて本文を確認 / 🟡 独立した報道2本以上が一致 / ⚠️ ソース1本・食い違い・開けなかった・見出しのみ</p></div></details></section>`;
+}
+function render(){
+  document.getElementById("app").innerHTML=reportHtml()+urgentHtml()+statusHtml()+impactHtml()+verifyHtml()+boardHtml()+tailHtml();
+  document.querySelectorAll(".chip[data-g]").forEach(b=>b.addEventListener("click",()=>{
+    const v=b.dataset.v||null; if(b.dataset.g==="c")fCat=v; else if(b.dataset.g==="r")fRank=v; else fConf=v;
+    try{localStorage.setItem("cud-filter3",JSON.stringify({c:fCat,f:fConf,r:fRank}))}catch(e){}
+    render();
+  }));
+  document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>{
+    let el=document.getElementById("q-"+b.dataset.jump);
+    if(!el){fCat=null;fConf=null;fRank=null;render();el=document.getElementById("q-"+b.dataset.jump)}
+    if(el){el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1600)}
+  }));
+}
+document.title=DATA.title||document.title;
+render();
+</script>
