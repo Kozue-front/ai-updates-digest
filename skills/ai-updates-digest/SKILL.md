@@ -1,6 +1,6 @@
 ---
 name: ai-updates-digest
-description: Claude / Anthropic のアップデート情報(新モデル、Claudeアプリの新機能、Claude Code の新コマンドや skills・plugins、API・料金・プラン変更、提供終了など)を公式情報源から漏れなく集め、1件ずつ裏を取って確度つきでまとめ、使っている skill への影響も判定して、視覚的に見られる1枚のHTMLアーティファクトにする。定型文「Claudeアプデ」(収集)と「Claudeアプデ検証」(貼ったまとめの裏取り)で必ず使う。うしろに期間が付くこともある(例「Claudeアプデ 30日」)。定型文が無くても、「Claudeの最近のアプデまとめて」「今週Claude何が出た?」「Claude Codeの新機能を教えて」「Anthropicの新しい発表ある?」と聞かれたとき、また Grok・ChatGPT・X・ニュース記事などのClaude関連まとめを貼られて「これ合ってる?」「裏取りして」と言われたときは、必ずこのskillを使う。単発の「Claudeの最新モデルは?」のような質問でも、期間の動きを知りたそうならこのskillを使う。
+description: 定型文「Claudeアプデ」(収集)と「Claudeアプデ検証」(貼ったまとめの裏取り)で必ず使う。うしろに期間が付くこともある(例「Claudeアプデ 30日」)。Claude / Anthropic のアップデート情報(新モデル、Claudeアプリの新機能、Claude Code の新コマンドや skills・plugins、API・料金・プラン変更、提供終了など)を公式情報源から漏れなく集め、1件ずつ裏を取って確度つきでまとめ、使っている skill への影響も判定して、視覚的に見られる1枚のHTMLアーティファクトにする。定型文が無くても、「Claudeの最近のアプデまとめて」「今週Claude何が出た?」「Claude Codeの新機能を教えて」「Anthropicの新しい発表ある?」と聞かれたとき、また Grok・ChatGPT・X・ニュース記事などのClaude関連まとめを貼られて「これ合ってる?」「裏取りして」と言われたときは、必ずこのskillを使う。単発の「Claudeの最新モデルは?」のような質問でも、期間の動きを知りたそうならこのskillを使う。
 ---
 
 # Claude アップデートまとめ

@@ -1,12 +1,15 @@
 {
   "name": "kozue-front",
   "description": "Kozue-front が公開している Claude 用プラグイン",
-  "owner": { "name": "Kozue-front", "url": "https://github.com/Kozue-front" },
+  "owner": {
+    "name": "Kozue-front",
+    "url": "https://github.com/Kozue-front"
+  },
   "plugins": [
     {
       "name": "ai-updates-digest",
       "source": "./",
-      "description": "Claude / Anthropic のアップデートを公式情報源から集めて裏を取り、1枚のレポートにする skill"
+      "description": "Claude のアップデートを集めて裏を取る skill と、今の設定を公式のベストプラクティスで診断する skill"
     }
   ]
 }

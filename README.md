@@ -28,6 +28,21 @@ Claude / Anthropic のアップデートを公式の情報源から集めて、1
 
 定型文を使わずに「今週の Claude のアプデまとめて」「これ合ってる?裏取りして」のように頼んでも動きます。
 
+## 設定の診断(v0.3.0 で追加)
+
+同じプラグインに、今の Claude の設定を診断する skill「ai-setup-checkup」も入っています。
+
+Instructions for Claude、プロジェクトの指示、skill、コネクタ、CLAUDE.md などを、公式のベストプラクティスと照らして 🟢 良い / 🟡 改善の余地 / 🔴 要対応 で判定します。判定には、該当する行の引用と、どの基準に当たるか(出典つき)が付きます。改善案は、そのまま貼れる文面で出します。反映するのは、承認したものだけです。
+
+| 打つ文 | 動き |
+|---|---|
+| `Claude診断` | 見えている設定すべてを診断する |
+| `Claude診断 skill` | skill だけを診断する |
+| `Claude診断 CLAUDE.md` | CLAUDE.md と `.claude/` の中だけを診断する |
+| `Claude診断 指示` | Instructions for Claude とプロジェクトの指示だけを診断する |
+
+診断の基準は `skills/ai-setup-checkup/references/best-practices.md` にまとめています(公式ドキュメントの要点と出典)。
+
 ## 入れ方
 
 ### おすすめ:プラグインとして入れる(自動で最新版になる)
@@ -51,15 +66,17 @@ Claude Code の場合は、次の1行で入ります。
 
 ### `.skill` ファイルで入れる(Claude.ai / デスクトップアプリ / Cowork)
 
-1. [Releases](../../releases) から `ai-updates-digest.skill` をダウンロードします。
-2. Claude の **Customize > Skills** で、ダウンロードしたファイルをアップロードします。
+1. [Releases](../../releases) から `ai-updates-digest.skill` をダウンロードします。設定の診断も使うなら、`ai-setup-checkup.skill` もダウンロードします。
+2. Claude の **Customize > Skills** で、ダウンロードしたファイルを1つずつアップロードします。
+
+この方法で入れた skill は、自動では更新されません。新しい版が出たら、古いものを削除してから入れ直してください。
 3. Team / Enterprise プランなら、skill の画面から組織に共有できます(組織の設定で共有が許可されている場合)。
 
 `.skill` ファイルは zip 形式です。自分で作る場合は、`skills/ai-updates-digest` フォルダを、フォルダごと zip にしてください。
 
 ### フォルダをコピーして入れる(Claude Code)
 
-`skills/ai-updates-digest` フォルダを、次のどちらかにコピーします。
+`skills/ai-updates-digest` フォルダ(診断も使うなら `skills/ai-setup-checkup` も)を、次のどちらかにコピーします。
 
 ```bash
 # 自分の全プロジェクトで使う
@@ -92,6 +109,10 @@ skills/ai-updates-digest/
 │   └── build_report.py          データを HTML レポートにする(形式チェック付き)
 └── assets/
     └── report_template.html     レポートのテンプレート(外部ライブラリなし)
+skills/ai-setup-checkup/
+├── SKILL.md                     設定の診断の手順(棚卸し、判定、レポート、反映)
+└── references/
+    └── best-practices.md        診断の基準(公式のベストプラクティスと出典)
 ```
 
 レポートのデザインはテンプレートに固定されているので、誰が作っても同じ見た目になります。スマホでも読めます。JavaScript のライブラリは使っていません。フォントだけ Google Fonts から読み込みます(いずれも SIL Open Font License)。読み込めない環境では、端末のフォントで表示されます。
@@ -118,7 +139,8 @@ skills/ai-updates-digest/
 - Type `Claudeアプデ検証` and paste a summary from another AI to fact-check it claim by claim.
 - Each item is tagged ✅ official / 🟡 two independent press reports / ⚠️ unverified. Claude Code release dates come from npm publish times.
 - The report also flags how the updates affect the skills and connectors you use (replace / combine / action needed).
+- Since v0.3.0, the plugin also includes **ai-setup-checkup**: type `Claude診断` to audit your instructions, projects, skills, connectors and CLAUDE.md against Anthropic's published best practices, with quoted evidence, ready-to-paste fixes, and changes applied only after you approve them.
 
-Install (recommended): in Claude, open Customize > Plugins, choose "+ Add" ▾ > "Add marketplace", enter `Kozue-front/ai-updates-digest`, keep "Sync automatically" on and click "Sync" (approve the GitHub "Install Claude" screen if it appears), then install AI Updates Digest from the Explore tab. If an update does not arrive, use "+ Add" ▾ > "Manage marketplaces" > ⋮ > "Check for updates". In Claude Code: `/plugin install ai-updates-digest --marketplace Kozue-front/ai-updates-digest`. You can also upload `ai-updates-digest.skill` from Releases, or copy `skills/ai-updates-digest` into `~/.claude/skills/`.
+Install (recommended): in Claude, open Customize > Plugins, choose "+ Add" ▾ > "Add marketplace", enter `Kozue-front/ai-updates-digest`, keep "Sync automatically" on and click "Sync" (approve the GitHub "Install Claude" screen if it appears), then install AI Updates Digest from the Explore tab. If an update does not arrive, use "+ Add" ▾ > "Manage marketplaces" > ⋮ > "Check for updates". In Claude Code: `/plugin install ai-updates-digest --marketplace Kozue-front/ai-updates-digest`. You can also upload `ai-updates-digest.skill` (and `ai-setup-checkup.skill`) from Releases — these do not update automatically — or copy `skills/ai-updates-digest` into `~/.claude/skills/`.
 
 Unofficial; not provided, endorsed, or warranted by Anthropic. Claude and Anthropic are trademarks of Anthropic, PBC. The sample report reflects updates from Oct 4–10, 2026 and is not kept current. Fonts are loaded from Google Fonts (SIL OFL). MIT licensed.
