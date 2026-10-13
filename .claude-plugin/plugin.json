@@ -1,0 +1,10 @@
+{
+  "name": "ai-updates-digest",
+  "displayName": "AI Updates Digest",
+  "version": "0.2.0",
+  "description": "Claude / Anthropic のアップデートを公式情報源から集めて1件ずつ裏を取り、確度つきの1枚のレポートにする。使っている skill への影響も判定する。「Claudeアプデ」で呼び出す。",
+  "author": { "name": "Kozue-front", "url": "https://github.com/Kozue-front" },
+  "homepage": "https://github.com/Kozue-front/ai-updates-digest",
+  "repository": "https://github.com/Kozue-front/ai-updates-digest",
+  "license": "MIT"
+}
