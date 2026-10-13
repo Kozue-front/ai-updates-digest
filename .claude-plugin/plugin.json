@@ -1,7 +1,7 @@
 {
   "name": "ai-updates-digest",
   "displayName": "AI Updates Digest",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Claude / Anthropic のアップデートを公式情報源から集めて裏を取り、確度つきの1枚のレポートにする(「Claudeアプデ」)。今の設定を公式のベストプラクティスと照らして診断し、改善案を出す(「Claude診断」)。",
   "author": {
     "name": "Kozue-front",
