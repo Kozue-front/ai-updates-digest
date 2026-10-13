@@ -30,7 +30,22 @@ Claude / Anthropic のアップデートを公式の情報源から集めて、1
 
 ## 入れ方
 
-### Claude.ai / Claude デスクトップアプリ(Cowork を含む)
+### おすすめ:プラグインとして入れる(自動で最新版になる)
+
+1. Claude の **Customize > Plugins** を開き、**Add marketplace** を選ぶ。
+2. `Kozue-front/ai-updates-digest` と入力して追加する。
+3. 表示された **ai-updates-digest** を **Install** する。
+4. マーケットプレイスの設定で **Sync automatically** をオンにすると、更新が自動で届きます。
+
+Claude Code の場合は、次の1行で入ります。
+
+```
+/plugin install ai-updates-digest --marketplace Kozue-front/ai-updates-digest
+```
+
+すでに `.skill` を手でアップロードしている場合は、同じ skill が2つにならないよう、そちらを削除してください。
+
+### `.skill` ファイルで入れる(Claude.ai / デスクトップアプリ / Cowork)
 
 1. [Releases](../../releases) から `ai-updates-digest.skill` をダウンロードします。
 2. Claude の **Customize > Skills** で、ダウンロードしたファイルをアップロードします。
@@ -38,7 +53,7 @@ Claude / Anthropic のアップデートを公式の情報源から集めて、1
 
 `.skill` ファイルは zip 形式です。自分で作る場合は、`skills/ai-updates-digest` フォルダを、フォルダごと zip にしてください。
 
-### Claude Code
+### フォルダをコピーして入れる(Claude Code)
 
 `skills/ai-updates-digest` フォルダを、次のどちらかにコピーします。
 
@@ -59,6 +74,9 @@ cp -r skills/ai-updates-digest .claude/skills/
 ## 中身
 
 ```
+.claude-plugin/
+├── plugin.json                  プラグインの名前・バージョン・説明
+└── marketplace.json             このリポジトリにあるプラグインの一覧
 skills/ai-updates-digest/
 ├── SKILL.md                     手順(情報源の回り方、確度の付け方、出力)
 ├── references/
@@ -97,6 +115,6 @@ skills/ai-updates-digest/
 - Each item is tagged ✅ official / 🟡 two independent press reports / ⚠️ unverified. Claude Code release dates come from npm publish times.
 - The report also flags how the updates affect the skills and connectors you use (replace / combine / action needed).
 
-Install: upload `ai-updates-digest.skill` from Releases in Claude (Customize > Skills), or copy `skills/ai-updates-digest` into `~/.claude/skills/` for Claude Code.
+Install (recommended): in Claude, open Customize > Plugins > Add marketplace, enter `Kozue-front/ai-updates-digest`, install ai-updates-digest, and turn on Sync automatically to get updates. In Claude Code: `/plugin install ai-updates-digest --marketplace Kozue-front/ai-updates-digest`. You can also upload `ai-updates-digest.skill` from Releases, or copy `skills/ai-updates-digest` into `~/.claude/skills/`.
 
 Unofficial; not provided, endorsed, or warranted by Anthropic. Claude and Anthropic are trademarks of Anthropic, PBC. The sample report reflects updates from Oct 4–10, 2026 and is not kept current. Fonts are loaded from Google Fonts (SIL OFL). MIT licensed.
