@@ -32,10 +32,14 @@ Claude / Anthropic のアップデートを公式の情報源から集めて、1
 
 ### おすすめ:プラグインとして入れる(自動で最新版になる)
 
-1. Claude の **Customize > Plugins** を開き、**Add marketplace** を選ぶ。
-2. `Kozue-front/ai-updates-digest` と入力して追加する。
-3. 表示された **ai-updates-digest** を **Install** する。
-4. マーケットプレイスの設定で **Sync automatically** をオンにすると、更新が自動で届きます。
+1. Claude の **カスタマイズ > プラグイン**(Customize > Plugins)を開く。
+2. 右上の **「+ 追加」の ▼** から **「マーケットプレイスを追加」**(Add marketplace)を選ぶ。
+3. URL に `Kozue-front/ai-updates-digest` と入力し、**「自動的に同期」**(Sync automatically)をオンのまま **「同期」** を押す。
+   - GitHub の確認画面(Install Claude)が出た場合は、画面に従って進めてください。リポジトリを選ぶ画面では「Only select repositories」(選んだものだけ)で必要なものだけを選ぶのがおすすめです。
+4. **「探索」** タブに出る **AI Updates Digest** の **「+」** を押してインストールする。
+5. 新しいチャットで「Claudeアプデ」と打って動けば完了です。
+
+更新はふつう自動で届きます。すぐ届かないときは、**「+ 追加」の ▼ →「マーケットプレイスを管理」** → ai-updates-digest の **「⋮」→「アップデートを確認」** を押してください。プラグインの詳細画面に出る版の番号が新しくなれば反映済みです。
 
 Claude Code の場合は、次の1行で入ります。
 
@@ -43,7 +47,7 @@ Claude Code の場合は、次の1行で入ります。
 /plugin install ai-updates-digest --marketplace Kozue-front/ai-updates-digest
 ```
 
-すでに `.skill` を手でアップロードしている場合は、同じ skill が2つにならないよう、そちらを削除してください。
+すでに `.skill` を手でアップロードしている場合は、同じ skill が2つにならないよう、**カスタマイズ > Skills** からそちらを削除してください。
 
 ### `.skill` ファイルで入れる(Claude.ai / デスクトップアプリ / Cowork)
 
@@ -115,6 +119,6 @@ skills/ai-updates-digest/
 - Each item is tagged ✅ official / 🟡 two independent press reports / ⚠️ unverified. Claude Code release dates come from npm publish times.
 - The report also flags how the updates affect the skills and connectors you use (replace / combine / action needed).
 
-Install (recommended): in Claude, open Customize > Plugins > Add marketplace, enter `Kozue-front/ai-updates-digest`, install ai-updates-digest, and turn on Sync automatically to get updates. In Claude Code: `/plugin install ai-updates-digest --marketplace Kozue-front/ai-updates-digest`. You can also upload `ai-updates-digest.skill` from Releases, or copy `skills/ai-updates-digest` into `~/.claude/skills/`.
+Install (recommended): in Claude, open Customize > Plugins, choose "+ Add" ▾ > "Add marketplace", enter `Kozue-front/ai-updates-digest`, keep "Sync automatically" on and click "Sync" (approve the GitHub "Install Claude" screen if it appears), then install AI Updates Digest from the Explore tab. If an update does not arrive, use "+ Add" ▾ > "Manage marketplaces" > ⋮ > "Check for updates". In Claude Code: `/plugin install ai-updates-digest --marketplace Kozue-front/ai-updates-digest`. You can also upload `ai-updates-digest.skill` from Releases, or copy `skills/ai-updates-digest` into `~/.claude/skills/`.
 
 Unofficial; not provided, endorsed, or warranted by Anthropic. Claude and Anthropic are trademarks of Anthropic, PBC. The sample report reflects updates from Oct 4–10, 2026 and is not kept current. Fonts are loaded from Google Fonts (SIL OFL). MIT licensed.
