@@ -40,6 +40,13 @@
   3. CHANGELOG は長いので、期間の最初のバージョンまで読み切れたか確かめる。
 - 落とし穴: CHANGELOG は細かい修正が大半。レポートには「使う人に見える変化」(新コマンド、新しい設定、skills / plugins / hooks / mods の仕様変更、モデルの切り替え、料金や上限に関わるもの)を選んで載せ、バグ修正は「その他◯件」とまとめる。
 
+### 5b. Claude Desktop(デスクトップアプリ)
+- Changelog: https://claude.com/docs/cowork/claude-desktop-changelog(Markdown 版は末尾に `.md`)
+- **まず `scripts/desktop_releases.py --since YYYY-MM-DD --until YYYY-MM-DD` を実行する。** 期間内のバージョンと変更内容を、節(General / Code / Cowork / 3P)ごとに出す。
+- 中身: デスクトップアプリ(Windows / macOS / Linux)のバージョンごとの変更。各項目に日付とバージョン番号(例: `v2.37337.1`)が付く。同梱の Claude Code のバージョンも書いてある。
+- 振り分け: General と Cowork の節は `Claudeアプリ`、Code の節(デスクトップの Code タブ)は `Claude Code` に入れる。3P の節は他社クラウド(Bedrock / Vertex など)経由で使う組織向けなので、使っている人の環境に関係するときだけ載せる。
+- 落とし穴: 2026-10-13 の「Open in new window」などデスクトップアプリだけの変更は、Help Center の Release notes にも Claude Code の CHANGELOG にも出ない。ここを飛ばすとアプリの更新を丸ごと見落とす(v0.3.2 まで実際に見落としていた)。ページが長い(20万字超)ので、手で開く場合は期間の始まりまで届いたかを確かめる。スクリプトは届かなかったときに「注意:」を出す。
+
 ### 6. X(公式アカウントと社員)
 - 公式: @claudeai / @AnthropicAI
 - Anthropic 社員の個人アカウント: Claude Code チームのメンバーなど(例: @trq212)。機能の背景や段階展開を話すことがある
@@ -59,6 +66,20 @@
 - 使い方: 見落とし防止の検索に使う(例:`Anthropic Claude 発表 2026年10月`、`Claude 新機能 ベータ`)。記事が引用している公式URL・X投稿のURLを開き、そちらで確認する。
 - 公式が見つからない項目を 🟡 にするには、**独立した** 報道2本以上の一致が要る(同じ記事の転載やまとめサイト同士は1本と数える)。
 
+## 開くサイトの数を減らす
+
+ページを開く(WebFetch)たびに、環境によっては「このサイトを見に行っていいか」の確認がサイトごとに出る。開くサイトが増えるほど、使う人は確認を押し続けることになる。漏れなさは落とさずに、次の順で数を絞る。
+
+1. **スクリプトでまとめて取る。** Claude Code(npm と GitHub)とデスクトップアプリ(claude.com)は、2本のスクリプトを **1回のコマンドで続けて** 実行する。ページを1つずつ開かない。
+   ```
+   python scripts/claude_code_releases.py --since S --until U ; python scripts/desktop_releases.py --since S --until U
+   ```
+2. **公式は4つのサイトだけ開く。** `claude.com`(1・3b・5b)、`support.claude.com`(2)、`platform.claude.com`(3)、`www.anthropic.com`(4)。`claude.dev/blog` は 1 の一覧に出るので、1 に無かった記事を確かめるときだけ開く。
+3. **見落としチェック(X・Releasebot・報道)は検索結果で済ませる。** WebSearch の結果(タイトルと抜粋)で候補を拾うところまでにし、記事ページは開かない。開くのは、公式で裏が取れなかった候補を 🟡 にするために本文が要るときだけ。そのときも候補を全部洗い出してから、必要な記事だけまとめて開く。
+4. **同じページを2回開かない。** 長いページの続きは offset で読む(同じサイトなので確認は増えない)。
+
+開けなかったサイトは、確認を断られた場合も含めて「探した場所」に「開けなかった」と書き、そこにしか無い情報は ⚠️ にする。
+
 ## 「探した場所」の記録例
 
 | 情報源 | 状態 | 読めた範囲 | 件数 |
@@ -66,4 +87,5 @@
 | Help Center Release notes | 開けた | 全期間 | 3 |
 | Platform Release notes | 開けた(2回に分けて取得) | 10/10〜10/01(期間をカバー) | 6 |
 | Claude Code CHANGELOG + npm | スクリプトで取得 | 2.1.289〜2.1.296 | 8バージョン |
+| Claude Desktop Changelog | スクリプトで取得 | v2.26454.2〜v2.37337.1 | 5バージョン |
 | 公式X | 検索経由 | 投稿3件を確認 | 1 |

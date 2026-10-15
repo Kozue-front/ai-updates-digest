@@ -43,7 +43,9 @@ Claude / Anthropic の更新情報を集め、1件ずつ裏を取って「確度
 - 長いページなら、期間の始まりまで読み切れたか(読めた範囲)
 - 見つかった件数
 
-**Claude Code** は `scripts/claude_code_releases.py` を実行すると、npm の公開日時(公式の公開記録)とCHANGELOGを突き合わせて期間内のバージョンだけを出してくれる。コード実行が使えない・ネットワークで弾かれた場合は、`references/sources.md` の手動手順に従う。
+**Claude Code** は `scripts/claude_code_releases.py` を実行すると、npm の公開日時(公式の公開記録)とCHANGELOGを突き合わせて期間内のバージョンだけを出してくれる。**Claude Desktop(デスクトップアプリ)** は `scripts/desktop_releases.py` で、公式の Desktop Changelog から期間内のバージョンを出す。デスクトップアプリの変更は Release notes にも Claude Code の CHANGELOG にも出ないことが多く、ここを飛ばすとアプリの更新を丸ごと見落とす。2本は1回のコマンドで続けて実行する。コード実行が使えない・ネットワークで弾かれた場合は、`references/sources.md` の手動手順に従う。
+
+**開くサイトはできるだけ少なくする。** 環境によっては、サイトを開くたびに「このサイトを見に行っていいか」の確認が出るため。公式は4つのサイト(claude.com / support.claude.com / platform.claude.com / www.anthropic.com)だけを開き、見落としチェックは検索結果(タイトルと抜粋)で候補を拾うところまでにする。報道の記事ページは、公式で裏が取れなかった候補を 🟡 にするのに本文が要るときだけ開く。詳しくは `references/sources.md` の「開くサイトの数を減らす」。
 
 ### 2. 候補を1件ずつ裏取りする
 
@@ -115,7 +117,7 @@ Claude / Anthropic の更新情報を集め、1件ずつ裏を取って「確度
 6. 検証モードのみ: 判定一覧と、元のまとめに無かった更新
 7. 探した場所と読めた範囲
 
-カテゴリは次の5つに固定する: `モデル` / `Claudeアプリ`(チャット・Cowork・モバイル・Chrome拡張・連携など) / `Claude Code` / `API・Platform`(API・SDK・Managed Agents・料金・モデル提供終了) / `会社・その他`(提携・方針・研究)。
+カテゴリは次の5つに固定する: `モデル` / `Claudeアプリ`(チャット・Cowork・デスクトップアプリ・モバイル・Chrome拡張・連携など) / `Claude Code` / `API・Platform`(API・SDK・Managed Agents・料金・モデル提供終了) / `会社・その他`(提携・方針・研究)。
 
 文章は日本語。製品名・機能名・コマンド名は英語表記のまま(`/mods`、`Claude Haiku 5.5` など)。誇張(「革命的」「ついに」など)は使わず、何が変わり誰が使えるのかを書く。
 

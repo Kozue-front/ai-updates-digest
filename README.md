@@ -10,9 +10,10 @@ Claude / Anthropic のアップデートを公式の情報源から集めて、1
 
 ## できること
 
-- **漏れなく集める**:Claude Resources の記事一覧、Help Center と Claude Platform の Release notes、Anthropic News、Claude Code の CHANGELOG、公式 X、報道を順に回ります。1か所だけを見て「無い」と判断しません。
+- **漏れなく集める**:Claude Resources の記事一覧、Help Center と Claude Platform の Release notes、Anthropic News、Claude Code の CHANGELOG、Claude Desktop(デスクトップアプリ)の Changelog、公式 X、報道を順に回ります。1か所だけを見て「無い」と判断しません。
 - **1件ずつ裏を取る**:公式ページを開いて本文を確かめたものだけを ✅ にします。報道2本以上が一致したものは 🟡、それ以外は ⚠️ です。数字(価格・クレジット額など)は開いたページにあったものしか載せません。
-- **Claude Code の日付を正確に出す**:CHANGELOG には日付が無いので、npm の公開日時と突き合わせて期間内のバージョンを出します。
+- **Claude Code とデスクトップアプリの日付を正確に出す**:Claude Code の CHANGELOG には日付が無いので、npm の公開日時と突き合わせて期間内のバージョンを出します。デスクトップアプリは公式の Changelog から期間内のバージョンを出します(v0.3.3 で追加)。
+- **確認の回数を抑える**:サイトを開くたびに許可の確認が出る環境に合わせて、開くのは公式の4サイトとスクリプトの取得先だけにし、報道や X は検索結果で候補を拾うところまでにします(v0.3.3)。
 - **他の AI のまとめを検証する**:Grok などのまとめを貼ると、主張ごとに「正しい / 一部違う / 誤り / 未確認」を判定し、元のまとめが落とした更新も挙げます。
 - **自分の環境への影響を出す**:使っている skill やコネクタと照らして、「置き換え候補 / 組み合わせ / 要対応」を判定します。置き換えるかどうかの判断と理由も付けます。
 
@@ -89,8 +90,8 @@ cp -r skills/ai-updates-digest .claude/skills/
 ## 必要なもの
 
 - **Web 検索とページ取得**:情報源を回るのに使います。
-- **コード実行(あると良い)**:同梱のスクリプトで、Claude Code の更新の抽出とレポートの組み立てをします。使えない環境では、skill の手順に書いた手作業の方法に切り替わります。
-- **ネットワーク**:スクリプトは `registry.npmjs.org` と `raw.githubusercontent.com` にアクセスします。
+- **コード実行(あると良い)**:同梱のスクリプトで、Claude Code とデスクトップアプリの更新の抽出とレポートの組み立てをします。使えない環境では、skill の手順に書いた手作業の方法に切り替わります。
+- **ネットワーク**:スクリプトは `registry.npmjs.org`、`raw.githubusercontent.com`、`claude.com` にアクセスします。ページを開くのは主に `claude.com`、`support.claude.com`、`platform.claude.com`、`www.anthropic.com` の4つです。
 
 ## 中身
 
@@ -106,6 +107,7 @@ skills/ai-updates-digest/
 │   └── data-format.md           レポートのデータ形式
 ├── scripts/
 │   ├── claude_code_releases.py  npm の公開日時で期間内の Claude Code の更新を出す
+│   ├── desktop_releases.py      公式 Changelog から期間内のデスクトップアプリの更新を出す
 │   └── build_report.py          データを HTML レポートにする(形式チェック付き)
 └── assets/
     └── report_template.html     レポートのテンプレート(外部ライブラリなし)
@@ -137,7 +139,7 @@ skills/ai-setup-checkup/
 
 - Type `Claudeアプデ` (optionally followed by a period such as `30日`) to get a digest of the last 7 days.
 - Type `Claudeアプデ検証` and paste a summary from another AI to fact-check it claim by claim.
-- Each item is tagged ✅ official / 🟡 two independent press reports / ⚠️ unverified. Claude Code release dates come from npm publish times.
+- Each item is tagged ✅ official / 🟡 two independent press reports / ⚠️ unverified. Claude Code release dates come from npm publish times; Claude Desktop releases come from the official Desktop changelog (since v0.3.3).
 - The report also flags how the updates affect the skills and connectors you use (replace / combine / action needed).
 - Since v0.3.0, the plugin also includes **ai-setup-checkup**: type `Claude診断` to audit your instructions, projects, skills, connectors and CLAUDE.md against Anthropic's published best practices, with quoted evidence, ready-to-paste fixes, and changes applied only after you approve them.
 
