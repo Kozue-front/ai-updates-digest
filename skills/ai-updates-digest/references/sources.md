@@ -41,7 +41,7 @@
 - 落とし穴: CHANGELOG は細かい修正が大半。レポートには「使う人に見える変化」(新コマンド、新しい設定、skills / plugins / hooks / mods の仕様変更、モデルの切り替え、料金や上限に関わるもの)を選んで載せ、バグ修正は「その他◯件」とまとめる。
 
 ### 5b. Claude Desktop(デスクトップアプリ)
-- Changelog: https://claude.com/docs/cowork/claude-desktop-changelog(Markdown 版は末尾に `.md`)
+- Changelog: https://claude.com/docs/cowork/changelog(Markdown 版は末尾に `.md`。2026-11 に旧 URL claude-desktop-changelog から移った・旧 URL はリダイレクト)
 - **まず `scripts/desktop_releases.py --since YYYY-MM-DD --until YYYY-MM-DD` を実行する。** 期間内のバージョンと変更内容を、節(General / Code / Cowork / 3P)ごとに出す。
 - 中身: デスクトップアプリ(Windows / macOS / Linux)のバージョンごとの変更。各項目に日付とバージョン番号(例: `v2.37337.1`)が付く。同梱の Claude Code のバージョンも書いてある。
 - 振り分け: General と Cowork の節は `Claudeアプリ`、Code の節(デスクトップの Code タブ)は `Claude Code` に入れる。3P の節は他社クラウド(Bedrock / Vertex など)経由で使う組織向けなので、使っている人の環境に関係するときだけ載せる。

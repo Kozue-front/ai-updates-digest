@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """期間内に出た Claude Desktop(デスクトップアプリ)のバージョンと変更内容を出す。
 
-公式の Claude Desktop Changelog は Markdown 版があり、各リリースが
-<Update label="v2.42304.0" description="2026-10-15"> の形で日付つきで並ぶ。
-これを日付で絞り込む。標準ライブラリのみ。
+公式の Claude Desktop Changelog は Markdown 版があり、各リリースが日付つきで並ぶ。
+書き方は2通りに対応する: 旧 <Update label="v2.42304.0" description="2026-10-15"> /
+新(2026-11〜)太字の版の行 **v6.28899.6** の次の行に日付。これを日付で絞り込む。標準ライブラリのみ。
 
 使い方:
   python desktop_releases.py --since 2026-10-04 --until 2026-10-10
@@ -18,12 +18,37 @@ import sys
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
-CHANGELOG_URL = "https://claude.com/docs/cowork/claude-desktop-changelog.md"
-PAGE_URL = "https://claude.com/docs/cowork/claude-desktop-changelog"
+# 2026-11 に URL が /docs/cowork/changelog に移った(旧 URL はリダイレクト)。
+CHANGELOG_URL = "https://claude.com/docs/cowork/changelog.md"
+PAGE_URL = "https://claude.com/docs/cowork/changelog"
 JST = timezone(timedelta(hours=9))
+# 旧形式: <Update label="v2.42304.0" description="2026-10-15"> ... </Update>
 UPDATE_RE = re.compile(
     r'<Update\s+label="([^"]*)"\s+description="([^"]*)"[^>]*>(.*?)</Update>', re.S)
+# 新形式(2026-11〜): 太字の版の行 → 空行 → 日付の行 → 本文
+VERSION_LINE_RE = re.compile(r"^\s*\*\*(v\d+(?:\.\d+)+)\*\*\s*$")
+DATE_LINE_RE = re.compile(r"^\s*(\d{4}-\d{2}-\d{2})\s*$")
 SECTION_RE = re.compile(r"^\s*\*\*([^*]+)\*\*\s*$")
+
+
+def parse_entries(text):
+    """[(版, 日付の文字列, 本文)] を返す。旧形式で取れなければ新形式で読む。"""
+    entries = UPDATE_RE.findall(text)
+    if entries:
+        return entries
+    lines = text.splitlines()
+    starts = [i for i, l in enumerate(lines) if VERSION_LINE_RE.match(l)]
+    for n, i in enumerate(starts):
+        end = starts[n + 1] if n + 1 < len(starts) else len(lines)
+        label = VERSION_LINE_RE.match(lines[i]).group(1)
+        date_s, body_start = "", i + 1
+        for j in range(i + 1, min(i + 4, end)):
+            m = DATE_LINE_RE.match(lines[j])
+            if m:
+                date_s, body_start = m.group(1), j + 1
+                break
+        entries.append((label, date_s, "\n".join(lines[body_start:end])))
+    return entries
 
 
 def fetch(url):
@@ -72,7 +97,7 @@ def main():
         sys.exit(2)
 
     rows, oldest = [], None
-    for label, date_s, body in UPDATE_RE.findall(text):
+    for label, date_s, body in parse_entries(text):
         try:
             d = datetime.strptime(date_s.strip(), "%Y-%m-%d").date()
         except ValueError:
